@@ -1,1 +1,10 @@
-{ "usuarios": [] }
+{
+  "usuarios": [
+    {
+      "user": "ssdsd",
+      "salt": "577b085fbe8e4e05939581e67f2c5cb6",
+      "hash": "143202996109a619c9e58c686611766f5e68931f366dc7a357e4eedc74cfeb87",
+      "creado": "2026-10-12T19:34:47.493Z"
+    }
+  ]
+}
