@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaskHUB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0a0b; --bg-soft:#111114; --card:#16161a; --card-hover:#1c1c22;
+    --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.14);
+    --fg:#f5f5f7; --muted:#8a8a94;
+    --accent:#7c5cff; --accent-2:#22d3ee; --green:#34d399; --red:#ef4444;
+    --shadow:0 10px 40px -10px rgba(0,0,0,0.6);
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg:#f6f6f8; --bg-soft:#ffffff; --card:#ffffff; --card-hover:#f0f0f4;
+      --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.12);
+      --fg:#0e0e12; --muted:#7a7a85;
+      --shadow:0 10px 40px -10px rgba(0,0,0,0.15);
+    }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    background:var(--bg); color:var(--fg);
+    min-height:100vh; padding:32px 20px 80px;
+    display:flex; justify-content:center;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(800px 400px at 15% -10%, rgba(124,92,255,0.12), transparent 60%),
+      radial-gradient(700px 400px at 90% 0%, rgba(34,211,238,0.08), transparent 60%);
+    background-attachment:fixed;
+  }
+  .app{width:100%; max-width:920px}
+  .hide{display:none !important}
+
+  /* ───── Auth ───── */
+  .auth-wrap{
+    min-height:80vh; display:flex; align-items:center; justify-content:center;
+  }
+  .auth{
+    width:100%; max-width:400px;
+    background:var(--card); border:1px solid var(--border);
+    border-radius:22px; padding:32px 28px;
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(20px);
+  }
+  .auth-logo{
+    width:52px; height:52px; border-radius:16px; margin:0 auto 16px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    font-size:24px; color:white;
+    box-shadow:0 10px 30px -8px var(--accent);
+  }
+  .auth h2{font-size:22px; font-weight:700; text-align:center; letter-spacing:-0.02em}
+  .auth .sub{font-size:13px; color:var(--muted); text-align:center; margin:6px 0 24px}
+  .field{margin-bottom:14px}
+  .field label{display:block; font-size:12px; color:var(--muted); margin-bottom:6px; font-weight:500}
+  .field input{
+    width:100%; padding:11px 14px;
+    background:var(--bg-soft); color:var(--fg);
+    border:1px solid var(--border); border-radius:11px;
+    font-size:14px; font-family:inherit;
+    transition:all .18s;
+  }
+  .field input:focus{
+    outline:none; border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(124,92,255,0.15);
+  }
+  .btn{
+    width:100%; padding:12px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:white; border:none; border-radius:11px;
+    font-size:14px; font-weight:600; cursor:pointer;
+    transition:all .18s; font-family:inherit;
+    box-shadow:0 8px 20px -8px var(--accent);
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px -8px var(--accent)}
+  .btn:disabled{opacity:.6; cursor:not-allowed; transform:none}
+  .auth-switch{
+    text-align:center; font-size:13px; color:var(--muted); margin-top:18px;
+  }
+  .auth-switch a{color:var(--accent); cursor:pointer; text-decoration:none; font-weight:500}
+  .auth-switch a:hover{text-decoration:underline}
+  .auth-msg{
+    font-size:12px; padding:9px 12px; border-radius:9px; margin-bottom:14px;
+    display:none;
+  }
+  .auth-msg.err{background:rgba(239,68,68,0.1); color:var(--red); border:1px solid rgba(239,68,68,0.25); display:block}
+  .auth-msg.ok{background:rgba(52,211,153,0.1); color:var(--green); border:1px solid rgba(52,211,153,0.25); display:block}
+
+  /* ───── Header app ───── */
+  .head{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:28px; gap:16px; flex-wrap:wrap}
+  .brand h1{
+    font-size:28px; font-weight:700; letter-spacing:-0.04em;
+    background:linear-gradient(135deg, var(--fg) 0%, var(--muted) 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand h1 .logo{
+    width:34px;height:34px;border-radius:11px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:17px;color:white;
+    box-shadow:0 8px 24px -8px var(--accent);
+  }
+  .brand p{color:var(--muted); font-size:13px; margin-top:6px}
+  .head-right{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+  .user-chip{
+    display:flex; align-items:center; gap:8px;
+    background:var(--card); border:1px solid var(--border);
+    padding:6px 12px 6px 6px; border-radius:999px; font-size:13px;
+  }
+  .user-chip .av{
+    width:26px; height:26px; border-radius:50%;
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    display:flex; align-items:center; justify-content:center;
+    color:white; font-weight:600; font-size:12px;
+  }
+  .logout{
+    background:var(--card); border:1px solid var(--border); color:var(--fg);
+    padding:8px 12px; border-radius:10px; font-size:12px; cursor:pointer;
+    font-family:inherit; transition:all .18s;
+  }
+  .logout:hover{background:var(--card-hover); border-color:var(--border-strong)}
+  .status{
+    display:flex; align-items:center; gap:8px;
+    font-size:12px; color:var(--muted);
+    background:var(--card); border:1px solid var(--border);
+    padding:8px 12px; border-radius:999px;
+  }
+  .status .dot{width:7px;height:7px;border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(52,211,153,0.15); animation:pulse 2s infinite}
+  @keyframes pulse{50%{opacity:.5}}
+
+  /* ───── Layout ───── */
+  .layout{display:grid; grid-template-columns: 1.1fr 0.9fr; gap:20px}
+  @media(max-width:760px){ .layout{grid-template-columns:1fr} }
+  .panel{
+    background:var(--card); border:1px solid var(--border);
+    border-radius:20px; padding:20px;
+    box-shadow:var(--shadow); backdrop-filter:blur(20px);
+  }
+
+  .cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
+  .cal-title{font-size:16px; font-weight:600; letter-spacing:-0.01em; text-transform:capitalize}
+  .cal-nav{display:flex; gap:6px}
+  .nav-btn{
+    background:var(--bg-soft); border:1px solid var(--border); color:var(--fg);
+    width:32px; height:32px; border-radius:10px; cursor:pointer;
+    display:grid; place-items:center; transition:all .18s; font-size:14px;
+  }
+  .nav-btn:hover{background:var(--card-hover); border-color:var(--border-strong); transform:translateY(-1px)}
+
+  .weekdays{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:8px}
+  .weekdays span{text-align:center; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; padding:6px 0; font-weight:600}
+
+  .grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px}
+  .day{
+    aspect-ratio:1; border-radius:12px; background:transparent;
+    border:1px solid transparent; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    position:relative; font-size:13.5px; font-weight:500; color:var(--fg);
+    transition:all .18s cubic-bezier(.2,.8,.2,1);
+    font-variant-numeric:tabular-nums;
+  }
+  .day:not(.other):hover{background:var(--card-hover); transform:scale(1.05)}
+  .day.other{color:var(--muted); opacity:.28; cursor:default}
+  .day.today{box-shadow:inset 0 0 0 1.5px var(--accent); color:var(--accent)}
+  .day.has-tasks{font-weight:600}
+  .day.selected{
+    background:linear-gradient(135deg, var(--accent), var(--accent-2));
+    color:#fff; transform:scale(1.05);
+    box-shadow:0 8px 20px -8px var(--accent); border-color:transparent;
+  }
+  .day .dot{position:absolute; bottom:5px; width:4px; height:4px; border-radius:50%; background:var(--accent)}
+  .day.selected .dot{background:#fff}
+
+  .tasks-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; flex-wrap:wrap}
+  .tasks-head h2{font-size:14px; font-weight:600; letter-spacing:-0.01em; text-transform:capitalize}
+  .tasks-head .count{font-size:11px; color:var(--muted); background:var(--bg-soft); border:1px solid var(--border); padding:3px 9px; border-radius:999px}
+
+  .tasks-list{display:flex; flex-direction:column; gap:8px; max-height:460px; overflow-y:auto; padding-right:4px}
+  .tasks-list::-webkit-scrollbar{width:4px}
+  .tasks-list::-webkit-scrollbar-thumb{background:var(--border-strong); border-radius:4px}
+
+  .task{
+    background:var(--bg-soft); border:1px solid var(--border);
+    border-radius:14px; padding:14px 16px;
+    display:flex; gap:14px; align-items:flex-start;
+    transition:all .18s; position:relative; overflow:hidden;
+  }
+  .task::before{
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:linear-gradient(180deg, var(--accent), var(--accent-2));
+    opacity:0; transition:opacity .18s;
+  }
+  .task:hover{background:var(--card-hover); border-color:var(--border-strong); transform:translateX(2px)}
+  .task:hover::before{opacity:1}
+  .task .time{font-size:12px; font-weight:600; color:var(--accent); min-width:44px; padding-top:1px; font-variant-numeric:tabular-nums}
+  .task .time.empty{color:var(--muted); font-weight:500}
+  .task .body{flex:1; min-width:0}
+  .task .title{font-size:14px; font-weight:600; margin-bottom:3px; letter-spacing:-0.01em; word-break:break-word}
+  .task .desc{font-size:12.5px; color:var(--muted); line-height:1.5; word-break:break-word; margin-top:6px; padding:8px 10px; background:var(--card); border-left:2px solid var(--border-strong); border-radius:6px}
+
+  .empty{color:var(--muted); font-size:13px; padding:40px 20px; text-align:center; border:1px dashed var(--border-strong); border-radius:14px}
+  .empty .big{font-size:28px; display:block; margin-bottom:8px; opacity:.5}
+
+  .foot{margin-top:20px; font-size:11px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+  .foot .key{font-family:ui-monospace,Menlo,monospace; background:var(--bg-soft); padding:2px 6px; border-radius:6px; border:1px solid var(--border)}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ LOGIN / REGISTRO ═══════════ -->
+<div id="authView" class="auth-wrap">
+  <div class="auth">
+    <div class="auth-logo">✦</div>
+    <h2 id="authTitle">Bienvenido a TaskHUB</h2>
+    <p class="sub" id="authSub">Ingresá con tu cuenta</p>
+    <div class="auth-msg" id="authMsg"></div>
+
+    <form id="authForm" autocomplete="off">
+      <div class="field">
+        <label>Usuario</label>
+        <input type="text" id="inUser" required minlength="3" maxlength="24" placeholder="tu_usuario">
+      </div>
+      <div class="field">
+        <label>Contraseña</label>
+        <input type="password" id="inPass" required minlength="4" maxlength="64" placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn" id="authBtn">Entrar</button>
+    </form>
+
+    <div class="auth-switch">
+      <span id="switchText">¿No tenés cuenta?</span>
+      <a id="switchLink">Crear una</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ APP ═══════════ -->
+<div id="appView" class="app hide">
+  <header class="head">
+    <div class="brand">
+      <h1><span class="logo">✦</span> TaskHUB</h1>
+      <p>Tu día, claro y ordenado</p>
+    </div>
+    <div class="head-right">
+      <div class="status" id="status">
+        <span class="dot"></span>
+        <span id="statusText">Conectando…</span>
+      </div>
+      <div class="user-chip">
+        <span class="av" id="userAv">?</span>
+        <span id="userName">—</span>
+      </div>
+      <button class="logout" id="logoutBtn">Salir</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="cal-head">
+        <div class="cal-title" id="title"></div>
+        <div class="cal-nav">
+          <button class="nav-btn" id="prev">‹</button>
+          <button class="nav-btn" id="next">›</button>
+        </div>
+      </div>
+      <div class="weekdays">
+        <span>Lun</span><span>Mar</span><span>Mié</span>
+        <span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="panel">
+      <div class="tasks-head">
+        <h2 id="tasksTitle">Seleccioná un día</h2>
+        <span class="count" id="tasksCount"></span>
+      </div>
+      <div class="tasks-list" id="tasksList">
+        <div class="empty"><span class="big">📭</span>Elegí un día para ver tus tareas</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="foot">
+    <span>Actualiza cada 3s · Los cambios llegan desde Telegram</span>
+    <span>Repo: <span class="key" id="repoLabel">—</span></span>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   1. DECODIFICADOR DE TOKEN (tu método)
+   ═══════════════════════════════════════════════════════════ */
+(() => {
+    const map = {
+        "Ax1\u0D9E": "A", "Bx2\u0D9E": "B", "Cx3\u0D9E": "C", "Dx4\u0D9E": "D",
+        "Ex5\u0D9E": "E", "Fx6\u0D9E": "F", "Gx7\u0D9E": "G", "Hx8\u0D9E": "H",
+        "Ix9\u0D9E": "I", "Jx10\u0D9E": "J", "Kx11\u0D9E": "K", "Lx12\u0D9E": "L",
+        "Mx13\u0D9E": "M", "Nx14\u0D9E": "N", "Ox15\u0D9E": "O", "Px16\u0D9E": "P",
+        "Qx17\u0D9E": "Q", "Rx18\u0D9E": "R", "Sx19\u0D9E": "S", "Tx20\u0D9E": "T",
+        "Ux21\u0D9E": "U", "Vx22\u0D9E": "V", "Wx23\u0D9E": "W", "Xx24\u0D9E": "X",
+        "Yx25\u0D9E": "Y", "Zx26\u0D9E": "Z",
+        "ax27\u0D9E": "a", "bx28\u0D9E": "b", "cx29\u0D9E": "c", "dx30\u0D9E": "d",
+        "ex31\u0D9E": "e", "fx32\u0D9E": "f", "gx33\u0D9E": "g", "hx34\u0D9E": "h",
+        "ix35\u0D9E": "i", "jx36\u0D9E": "j", "kx37\u0D9E": "k", "lx38\u0D9E": "l",
+        "mx39\u0D9E": "m", "nx40\u0D9E": "n", "ox41\u0D9E": "o", "px42\u0D9E": "p",
+        "qx43\u0D9E": "q", "rx44\u0D9E": "r", "sx45\u0D9E": "s", "tx46\u0D9E": "t",
+        "ux47\u0D9E": "u", "vx48\u0D9E": "v", "wx49\u0D9E": "w", "xx50\u0D9E": "x",
+        "yx51\u0D9E": "y", "zx52\u0D9E": "z",
+        "0x53\u0D9E": "0", "1x54\u0D9E": "1", "2x55\u0D9E": "2", "3x56\u0D9E": "3",
+        "4x57\u0D9E": "4", "5x58\u0D9E": "5", "6x59\u0D9E": "6", "7x60\u0D9E": "7",
+        "8x61\u0D9E": "8", "9x62\u0D9E": "9",
+        "53\u0D9E": "0", "54\u0D9E": "1", "55\u0D9E": "2", "56\u0D9E": "3", "57\u0D9E": "4",
+        "58\u0D9E": "5", "59\u0D9E": "6", "60\u0D9E": "7", "61\u0D9E": "8", "62\u0D9E": "9",
+        "_x63\u0D9E": "_", "-x64\u0D9E": "-", "dx65\u0D9E": "."
+    };
+    window.decodeD = function(encoded) {
+        return encoded.replace(/(?:[A-Za-z0-9]x\d+\u0D9E|\d+\u0D9E)/g, token => map[token] ?? token);
+    };
+})();
+
+/* ═══════════════════════════════════════════════════════════
+   2. CONFIGURACIÓN
+   ═══════════════════════════════════════════════════════════ */
+const GH_USER  = "TU_USUARIO_GITHUB";      // ← cambiá
+const GH_REPO  = "TU_REPO";                // ← cambiá
+const GH_BRANCH = "main";
+const PATH_ACC = "taskhub/account.json";
+const PATH_TAR = "taskhub/tareas.json";
+
+// ⚠️ Pegá acá el token ofuscado que generaste con la función de arriba
+const TOKEN_OFUSCADO = "gx33\u0D9Ehx34\u0D9Epx42\u0D9E_x63\u0D9E...";  // ← reemplazá
+
+const GH_TOKEN = window.decodeD(TOKEN_OFUSCADO);
+const GH_API   = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+
+/* ═══════════════════════════════════════════════════════════
+   3. UTILIDADES GITHUB
+   ═══════════════════════════════════════════════════════════ */
+async function ghGet(path){
+  const r = await fetch(`${GH_API}/${path}?ref=${GH_BRANCH}`, {
+    headers: { Authorization: `Bearer ${GH_TOKEN}`, Accept: "application/vnd.github+json" },
+    cache: "no-store"
+  });
+  if(r.status === 404) return { data: null, sha: null };
+  if(!r.ok) throw new Error(`GET ${path} → ${r.status}`);
+  const j = await r.json();
+  const raw = atob(j.content.replace(/\n/g, ""));
+  // UTF-8 seguro
+  const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
+  const texto = new TextDecoder().decode(bytes);
+  return { data: JSON.parse(texto), sha: j.sha };
+}
+
+async function ghPut(path, obj, sha, mensaje){
+  const texto = JSON.stringify(obj, null, 2);
+  const bytes = new TextEncoder().encode(texto);
+  let bin = "";
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  const content = btoa(bin);
+
+  const body = { message: mensaje, content, branch: GH_BRANCH };
+  if(sha) body.sha = sha;
+
+  const r = await fetch(`${GH_API}/${path}`, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${GH_TOKEN}`,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+  if(!r.ok){
+    const err = await r.text();
+    throw new Error(`PUT ${path} → ${r.status}: ${err}`);
+  }
+  return await r.json();
+}
+
+/* ═══════════════════════════════════════════════════════════
+   4. HASH DE CONTRASEÑA (SHA-256 + salt simple)
+   ═══════════════════════════════════════════════════════════ */
+async function hashPass(pass, salt){
+  const data = new TextEncoder().encode(salt + "::" + pass);
+  const buf = await crypto.subtle.digest("SHA-256", data);
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+}
+
+/* ═══════════════════════════════════════════════════════════
+   5. AUTH
+   ═══════════════════════════════════════════════════════════ */
+let modoRegistro = false;
+let currentUser  = null;
+
+const $ = id => document.getElementById(id);
+
+function authMsg(texto, tipo){
+  const el = $("authMsg");
+  el.className = "auth-msg " + (tipo || "err");
+  el.textContent = texto;
+}
+function clearAuthMsg(){ $("authMsg").className = "auth-msg"; }
+
+$("switchLink").onclick = () => {
+  modoRegistro = !modoRegistro;
+  clearAuthMsg();
+  $("authTitle").textContent = modoRegistro ? "Crear cuenta" : "Bienvenido a TaskHUB";
+  $("authSub").textContent   = modoRegistro ? "Elegí un usuario y contraseña" : "Ingresá con tu cuenta";
+  $("authBtn").textContent   = modoRegistro ? "Crear cuenta" : "Entrar";
+  $("switchText").textContent = modoRegistro ? "¿Ya tenés cuenta?" : "¿No tenés cuenta?";
+  $("switchLink").textContent = modoRegistro ? "Ingresar" : "Crear una";
+};
+
+$("authForm").onsubmit = async (e) => {
+  e.preventDefault();
+  const user = $("inUser").value.trim().toLowerCase();
+  const pass = $("inPass").value;
+
+  if(!/^[a-z0-9_]{3,24}$/.test(user)){
+    return authMsg("Usuario: 3-24 chars, solo letras, números y _");
+  }
+  if(pass.length < 4){
+    return authMsg("Contraseña muy corta");
+  }
+
+  const btn = $("authBtn");
+  btn.disabled = true;
+  btn.textContent = modoRegistro ? "Creando…" : "Entrando…";
+  clearAuthMsg();
+
+  try{
+    const { data: accounts, sha } = await ghGet(PATH_ACC);
+    const usuarios = (accounts?.usuarios) || [];
+
+    if(modoRegistro){
+      if(usuarios.some(u => u.user === user)){
+        throw new Error("Ese usuario ya existe");
+      }
+      const salt = crypto.randomUUID().replace(/-/g, "");
+      const hash = await hashPass(pass, salt);
+      usuarios.push({
+        user, salt, hash,
+        creado: new Date().toISOString()
+      });
+      await ghPut(PATH_ACC, { usuarios }, sha, `Nuevo usuario: ${user}`);
+      authMsg("¡Cuenta creada! Entrando…", "ok");
+      await new Promise(r => setTimeout(r, 700));
+      iniciarSesion(user);
+    } else {
+      const u = usuarios.find(x => x.user === user);
+      if(!u) throw new Error("Usuario o contraseña incorrectos");
+      const hash = await hashPass(pass, u.salt);
+      if(hash !== u.hash) throw new Error("Usuario o contraseña incorrectos");
+      iniciarSesion(user);
+    }
+  } catch(err){
+    console.error(err);
+    authMsg(err.message || "Error inesperado");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = modoRegistro ? "Crear cuenta" : "Entrar";
+  }
+};
+
+function iniciarSesion(user){
+  currentUser = user;
+  localStorage.setItem("taskhub_user", user);
+  $("userName").textContent = user;
+  $("userAv").textContent   = user[0].toUpperCase();
+  $("authView").classList.add("hide");
+  $("appView").classList.remove("hide");
+  $("repoLabel").textContent = `${GH_USER}/${GH_REPO}`;
+  cargarTareas();
+  if(window._taskInterval) clearInterval(window._taskInterval);
+  window._taskInterval = setInterval(cargarTareas, 3000);
+}
+
+function cerrarSesion(){
+  currentUser = null;
+  localStorage.removeItem("taskhub_user");
+  if(window._taskInterval) clearInterval(window._taskInterval);
+  $("appView").classList.add("hide");
+  $("authView").classList.remove("hide");
+  $("inPass").value = "";
+  clearAuthMsg();
+}
+
+$("logoutBtn").onclick = cerrarSesion;
+
+/* ═══════════════════════════════════════════════════════════
+   6. TAREAS
+   ═══════════════════════════════════════════════════════════ */
+const MESES = ["enero","febrero","marzo","abril","mayo","junio",
+  "julio","agosto","septiembre","octubre","noviembre","diciembre"];
+
+let tareas = [];
+let current = new Date();
+let selected = null;
+
+function ymd(d){
+  return d.getFullYear() + '-' +
+    String(d.getMonth()+1).padStart(2,'0') + '-' +
+    String(d.getDate()).padStart(2,'0');
+}
+function tasksFor(dateStr){
+  return tareas.filter(t => t.fecha === dateStr)
+    .sort((a,b) => (a.hora||'99').localeCompare(b.hora||'99'));
+}
+function setStatus(ok, text){
+  $("statusText").textContent = text;
+  const dot = document.querySelector('.status .dot');
+  dot.style.background = ok ? 'var(--green)' : 'var(--red)';
+  dot.style.boxShadow = ok ? '0 0 0 3px rgba(52,211,153,0.15)' : '0 0 0 3px rgba(239,68,68,0.15)';
+}
+
+async function cargarTareas(){
+  if(!currentUser) return;
+  try{
+    const { data } = await ghGet(PATH_TAR);
+    const todas = data?.tareas || [];
+    // Filtrar por usuario
+    const mias = todas.filter(t => !t.user || t.user === currentUser);
+    const cambio = JSON.stringify(mias) !== JSON.stringify(tareas);
+    tareas = mias;
+    setStatus(true, "Sincronizado");
+    if(cambio) render();
+  } catch(err){
+    console.error(err);
+    setStatus(false, "Error al sincronizar");
+  }
+}
+
+function render(){
+  const y = current.getFullYear();
+  const m = current.getMonth();
+  $("title").textContent = `${MESES[m]} ${y}`;
+
+  const grid = $("grid");
+  grid.innerHTML = '';
+
+  const first = new Date(y, m, 1);
+  const offset = (first.getDay() + 6) % 7;
+  const daysInMonth = new Date(y, m+1, 0).getDate();
+  const daysInPrev = new Date(y, m, 0).getDate();
+  const todayStr = ymd(new Date());
+
+  for(let i = offset - 1; i >= 0; i--) grid.appendChild(makeDay(daysInPrev - i, 'other'));
+  for(let d = 1; d <= daysInMonth; d++){
+    const ds = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cls = ds === todayStr ? 'today' : '';
+    grid.appendChild(makeDay(d, cls, ds));
+  }
+  const total = offset + daysInMonth;
+  const fill = (7 - (total % 7)) % 7;
+  for(let d = 1; d <= fill; d++) grid.appendChild(makeDay(d, 'other'));
+
+  renderTasks();
+}
+
+function makeDay(num, cls, dateStr){
+  const el = document.createElement('div');
+  el.className = 'day ' + cls;
+  el.textContent = num;
+  if(dateStr){
+    el.dataset.date = dateStr;
+    if(tasksFor(dateStr).length){
+      el.classList.add('has-tasks');
+      const dot = document.createElement('span');
+      dot.className = 'dot';
+      el.appendChild(dot);
+    }
+    if(dateStr === selected) el.classList.add('selected');
+    el.onclick = () => {
+      selected = dateStr;
+      document.querySelectorAll('.day.selected').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      renderTasks();
+    };
+  }
+  return el;
+}
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+function renderTasks(){
+  const list = $("tasksList");
+  const title = $("tasksTitle");
+  const count = $("tasksCount");
+  list.innerHTML = '';
+
+  if(!selected){
+    title.textContent = 'Seleccioná un día';
+    count.textContent = '';
+    list.innerHTML = '<div class="empty"><span class="big">📭</span>Elegí un día para ver tus tareas</div>';
+    return;
+  }
+
+  const [y,m,d] = selected.split('-').map(Number);
+  title.textContent = `${d} de ${MESES[m-1]}`;
+
+  const ts = tasksFor(selected);
+  count.textContent = ts.length === 0 ? 'sin tareas' :
+    ts.length === 1 ? '1 tarea' : `${ts.length} tareas`;
+
+  if(!ts.length){
+    list.innerHTML = '<div class="empty"><span class="big">✨</span>Día libre</div>';
+    return;
+  }
+
+  ts.forEach((t, i) => {
+    const el = document.createElement('div');
+    el.className = 'task';
+    el.style.animation = `fadeIn .3s ${i*0.04}s both`;
+    el.innerHTML = `
+      <div class="time ${t.hora ? '' : 'empty'}">${t.hora || '—'}</div>
+      <div class="body">
+        <div class="title">${escapeHtml(t.titulo || '')}</div>
+        ${t.descripcion ? `<div class="desc">${escapeHtml(t.descripcion)}</div>` : ''}
+      </div>`;
+    list.appendChild(el);
+  });
+}
+
+$("prev").onclick = () => { current.setMonth(current.getMonth() - 1); render(); };
+$("next").onclick = () => { current.setMonth(current.getMonth() + 1); render(); };
+
+document.addEventListener("keydown", e => {
+  if(e.key === "ArrowLeft")  $("prev").click();
+  if(e.key === "ArrowRight") $("next").click();
+});
+
+const st = document.createElement('style');
+st.textContent = `@keyframes fadeIn{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}`;
+document.head.appendChild(st);
+
+/* ═══════════════════════════════════════════════════════════
+   7. AUTOLOGIN
+   ═══════════════════════════════════════════════════════════ */
+(async () => {
+  const saved = localStorage.getItem("taskhub_user");
+  if(saved){
+    try{
+      const { data } = await ghGet(PATH_ACC);
+      if(data?.usuarios?.some(u => u.user === saved)){
+        iniciarSesion(saved);
+      } else {
+        localStorage.removeItem("taskhub_user");
+      }
+    } catch(e){
+      console.warn("No se pudo verificar sesión:", e.message);
+    }
+  }
+})();
+</script>
+</body>
+</html>
