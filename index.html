@@ -6,13 +6,14 @@
 <title>TaskHUB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0a0a0b; --bg-soft:#111114; --card:#16161a; --card-hover:#1c1c22;
     --border:rgba(255,255,255,0.07); --border-strong:rgba(255,255,255,0.14);
     --fg:#f5f5f7; --muted:#8a8a94;
-    --accent:#7c5cff; --accent-2:#22d3ee; --green:#34d399; --red:#ef4444;
+    --accent:#7c5cff; --accent-2:#22d3ee;
+    --green:#34d399; --red:#ef4444; --amber:#fbbf24;
     --shadow:0 10px 40px -10px rgba(0,0,0,0.6);
   }
   @media (prefers-color-scheme: light){
@@ -39,16 +40,13 @@
   .app{width:100%; max-width:920px}
   .hide{display:none !important}
 
-  /* ───── Auth ───── */
-  .auth-wrap{
-    min-height:80vh; display:flex; align-items:center; justify-content:center;
-  }
+  /* Auth */
+  .auth-wrap{min-height:80vh; display:flex; align-items:center; justify-content:center}
   .auth{
     width:100%; max-width:400px;
     background:var(--card); border:1px solid var(--border);
     border-radius:22px; padding:32px 28px;
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(20px);
+    box-shadow:var(--shadow); backdrop-filter:blur(20px);
   }
   .auth-logo{
     width:52px; height:52px; border-radius:16px; margin:0 auto 16px;
@@ -65,13 +63,9 @@
     width:100%; padding:11px 14px;
     background:var(--bg-soft); color:var(--fg);
     border:1px solid var(--border); border-radius:11px;
-    font-size:14px; font-family:inherit;
-    transition:all .18s;
+    font-size:14px; font-family:inherit; transition:all .18s;
   }
-  .field input:focus{
-    outline:none; border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(124,92,255,0.15);
-  }
+  .field input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px rgba(124,92,255,0.15)}
   .btn{
     width:100%; padding:12px;
     background:linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -82,19 +76,15 @@
   }
   .btn:hover{transform:translateY(-1px); box-shadow:0 12px 28px -8px var(--accent)}
   .btn:disabled{opacity:.6; cursor:not-allowed; transform:none}
-  .auth-switch{
-    text-align:center; font-size:13px; color:var(--muted); margin-top:18px;
-  }
+  .auth-switch{text-align:center; font-size:13px; color:var(--muted); margin-top:18px}
   .auth-switch a{color:var(--accent); cursor:pointer; text-decoration:none; font-weight:500}
   .auth-switch a:hover{text-decoration:underline}
-  .auth-msg{
-    font-size:12px; padding:9px 12px; border-radius:9px; margin-bottom:14px;
-    display:none;
-  }
+  .auth-msg{font-size:12px; padding:9px 12px; border-radius:9px; margin-bottom:14px; display:none}
   .auth-msg.err{background:rgba(239,68,68,0.1); color:var(--red); border:1px solid rgba(239,68,68,0.25); display:block}
   .auth-msg.ok{background:rgba(52,211,153,0.1); color:var(--green); border:1px solid rgba(52,211,153,0.25); display:block}
+  .auth-msg.warn{background:rgba(251,191,36,0.1); color:var(--amber); border:1px solid rgba(251,191,36,0.25); display:block}
 
-  /* ───── Header app ───── */
+  /* Header app */
   .head{display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:28px; gap:16px; flex-wrap:wrap}
   .brand h1{
     font-size:28px; font-weight:700; letter-spacing:-0.04em;
@@ -135,16 +125,14 @@
     padding:8px 12px; border-radius:999px;
   }
   .status .dot{width:7px;height:7px;border-radius:50%; background:var(--green); box-shadow:0 0 0 3px rgba(52,211,153,0.15); animation:pulse 2s infinite}
+  .status .dot.err{background:var(--red); box-shadow:0 0 0 3px rgba(239,68,68,0.15); animation:none}
+  .status .dot.warn{background:var(--amber); box-shadow:0 0 0 3px rgba(251,191,36,0.15)}
   @keyframes pulse{50%{opacity:.5}}
 
-  /* ───── Layout ───── */
+  /* Layout */
   .layout{display:grid; grid-template-columns: 1.1fr 0.9fr; gap:20px}
   @media(max-width:760px){ .layout{grid-template-columns:1fr} }
-  .panel{
-    background:var(--card); border:1px solid var(--border);
-    border-radius:20px; padding:20px;
-    box-shadow:var(--shadow); backdrop-filter:blur(20px);
-  }
+  .panel{background:var(--card); border:1px solid var(--border); border-radius:20px; padding:20px; box-shadow:var(--shadow); backdrop-filter:blur(20px)}
 
   .cal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px}
   .cal-title{font-size:16px; font-weight:600; letter-spacing:-0.01em; text-transform:capitalize}
@@ -158,7 +146,6 @@
 
   .weekdays{display:grid; grid-template-columns:repeat(7,1fr); gap:4px; margin-bottom:8px}
   .weekdays span{text-align:center; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; padding:6px 0; font-weight:600}
-
   .grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px}
   .day{
     aspect-ratio:1; border-radius:12px; background:transparent;
@@ -183,7 +170,6 @@
   .tasks-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; gap:12px; flex-wrap:wrap}
   .tasks-head h2{font-size:14px; font-weight:600; letter-spacing:-0.01em; text-transform:capitalize}
   .tasks-head .count{font-size:11px; color:var(--muted); background:var(--bg-soft); border:1px solid var(--border); padding:3px 9px; border-radius:999px}
-
   .tasks-list{display:flex; flex-direction:column; gap:8px; max-height:460px; overflow-y:auto; padding-right:4px}
   .tasks-list::-webkit-scrollbar{width:4px}
   .tasks-list::-webkit-scrollbar-thumb{background:var(--border-strong); border-radius:4px}
@@ -212,6 +198,18 @@
 
   .foot{margin-top:20px; font-size:11px; color:var(--muted); display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
   .foot .key{font-family:ui-monospace,Menlo,monospace; background:var(--bg-soft); padding:2px 6px; border-radius:6px; border:1px solid var(--border)}
+
+  /* Toast */
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px);
+    background:var(--card); border:1px solid var(--border);
+    padding:12px 18px; border-radius:12px; font-size:13px;
+    box-shadow:var(--shadow); opacity:0; transition:all .3s;
+    z-index:1000; max-width:90vw;
+  }
+  .toast.show{transform:translateX(-50%) translateY(0); opacity:1}
+  .toast.err{border-color:rgba(239,68,68,0.4); color:var(--red)}
+  .toast.ok{border-color:rgba(52,211,153,0.4); color:var(--green)}
 </style>
 </head>
 <body>
@@ -227,7 +225,7 @@
     <form id="authForm" autocomplete="off">
       <div class="field">
         <label>Usuario</label>
-        <input type="text" id="inUser" required minlength="3" maxlength="24" placeholder="tu_usuario">
+        <input type="text" id="inUser" required minlength="3" maxlength="24" placeholder="tu_usuario" autocapitalize="off" autocorrect="off" spellcheck="false">
       </div>
       <div class="field">
         <label>Contraseña</label>
@@ -252,7 +250,7 @@
     </div>
     <div class="head-right">
       <div class="status" id="status">
-        <span class="dot"></span>
+        <span class="dot" id="statusDot"></span>
         <span id="statusText">Conectando…</span>
       </div>
       <div class="user-chip">
@@ -296,9 +294,11 @@
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
 <script>
 /* ═══════════════════════════════════════════════════════════
-   1. DECODIFICADOR DE TOKEN (tu método)
+   1. DECODIFICADOR + SANITIZADOR
    ═══════════════════════════════════════════════════════════ */
 (() => {
     const map = {
@@ -323,42 +323,100 @@
         "58\u0D9E": "5", "59\u0D9E": "6", "60\u0D9E": "7", "61\u0D9E": "8", "62\u0D9E": "9",
         "_x63\u0D9E": "_", "-x64\u0D9E": "-", "dx65\u0D9E": "."
     };
+
+    // Regex más tolerante: captura cualquier "algo + xN + 0D9E"
+    const RX = /(?:[A-Za-z0-9_\-\.]x\d+\u0D9E|\d+\u0D9E)/g;
+
     window.decodeD = function(encoded) {
-        return encoded.replace(/(?:[A-Za-z0-9]x\d+\u0D9E|\d+\u0D9E)/g, token => map[token] ?? token);
+        if(!encoded) return "";
+        let out = encoded.replace(RX, token => map[token] ?? token);
+        // DEFENSA FINAL: remover cualquier \u0D9E residual y validar ASCII
+        out = out.replace(/\u0D9E/g, "");
+        // Solo caracteres ASCII imprimibles
+        out = out.replace(/[^\x20-\x7E]/g, "");
+        return out;
     };
 })();
 
 /* ═══════════════════════════════════════════════════════════
-   2. CONFIGURACIÓN
+   2. CONFIGURACIÓN (editá estas 3 líneas)
    ═══════════════════════════════════════════════════════════ */
-const GH_USER  = "TU_USUARIO_GITHUB";      // ← cambiá
-const GH_REPO  = "TU_REPO";                // ← cambiá
-const GH_BRANCH = "main";
+const GH_USER = "TU_USUARIO_GITHUB";     // ← cambiá
+const GH_REPO = "TU_REPO";               // ← cambiá
+
 const PATH_ACC = "taskhub/account.json";
 const PATH_TAR = "taskhub/tareas.json";
+const GH_BRANCH = "main";
 
-// ⚠️ Pegá acá el token ofuscado que generaste con la función de arriba
-const TOKEN_OFUSCADO = "gx33\u0D9Ehx34\u0D9Epx42\u0D9E_x63\u0D9E...";  // ← reemplazá
-
-const GH_TOKEN = window.decodeD(TOKEN_OFUSCADO);
-const GH_API   = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+// ⚠️ Token ofuscado. Reemplazá por el resultado del generador con TU token nuevo.
+// Este es el ejemplo con tu token (ya quemado, NO lo uses en producción):
+const TOKEN_OFUSCADO = "gx33\\u0D9Ehx34\\u0D9Epx42\\u0D9E_x63\\u0D9Egx33\\u0D9E1x54\\u0D9EDx4\\u0D9EKx11\\u0D9Eix35\\u0D9Eux47\\u0D9Eix35\\u0D9Evx48\\u0D9Eux47\\u0D9EJx10\\u0D9E5x58\\u0D9E1x54\\u0D9EDx4\\u0D9Enx40\\u0D9Efx32\\u0D9Eqx43\\u0D9E7x60\\u0D9E3x56\\u0D9EKx11\\u0D9Ekx37\\u0D9Elx38\\u0D9Erx44\\u0D9EVx22\\u0D9EQx17\\u0D9ECx3\\u0D9Eqx43\\u0D9ENx14\\u0D9EYx25\\u0D9ENx14\\u0D9Eqx43\\u0D9E4x57\\u0D9ESx19\\u0D9E0x53\\u0D9EVx22\\u0D9Ewx49\\u0D9EAx1\\u0D9E";
 
 /* ═══════════════════════════════════════════════════════════
-   3. UTILIDADES GITHUB
+   3. GH TOKEN (decodificado + sanitizado)
    ═══════════════════════════════════════════════════════════ */
+const GH_TOKEN_RAW = window.decodeD(TOKEN_OFUSCADO);
+const GH_TOKEN = GH_TOKEN_RAW.trim();
+const GH_API = `https://api.github.com/repos/${GH_USER}/${GH_REPO}/contents`;
+
+// Diagnóstico rápido en consola
+console.log("[TaskHUB] Token len:", GH_TOKEN.length,
+            "| primeros 4:", GH_TOKEN.slice(0,4),
+            "| ASCII ok:", /^[\x20-\x7E]+$/.test(GH_TOKEN));
+
+/* ═══════════════════════════════════════════════════════════
+   4. HELPERS
+   ═══════════════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+
+function toast(msg, tipo){
+  const t = $("toast");
+  t.className = "toast " + (tipo || "");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove("show"), 3000);
+}
+
+async function fetchConReintento(url, opts, intentos = 3){
+  let lastErr;
+  for(let i = 0; i < intentos; i++){
+    try{
+      const r = await fetch(url, opts);
+      // 5xx → reintentar
+      if(r.status >= 500 && i < intentos - 1){
+        await new Promise(res => setTimeout(res, 300 * (i + 1)));
+        continue;
+      }
+      return r;
+    } catch(e){
+      lastErr = e;
+      if(i < intentos - 1) await new Promise(res => setTimeout(res, 300 * (i + 1)));
+    }
+  }
+  throw lastErr;
+}
+
 async function ghGet(path){
-  const r = await fetch(`${GH_API}/${path}?ref=${GH_BRANCH}`, {
-    headers: { Authorization: `Bearer ${GH_TOKEN}`, Accept: "application/vnd.github+json" },
+  const r = await fetchConReintento(`${GH_API}/${path}?ref=${GH_BRANCH}&t=${Date.now()}`, {
+    headers: {
+      "Authorization": `Bearer ${GH_TOKEN}`,
+      "Accept": "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
+    },
     cache: "no-store"
   });
   if(r.status === 404) return { data: null, sha: null };
-  if(!r.ok) throw new Error(`GET ${path} → ${r.status}`);
+  if(r.status === 401) throw new Error("Token inválido o expirado");
+  if(r.status === 403) throw new Error("Sin permisos o rate limit");
+  if(!r.ok) throw new Error(`GitHub ${r.status}`);
   const j = await r.json();
   const raw = atob(j.content.replace(/\n/g, ""));
-  // UTF-8 seguro
   const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
   const texto = new TextDecoder().decode(bytes);
-  return { data: JSON.parse(texto), sha: j.sha };
+  let data = null;
+  try { data = JSON.parse(texto); } catch(e){ data = null; }
+  return { data, sha: j.sha };
 }
 
 async function ghPut(path, obj, sha, mensaje){
@@ -371,29 +429,28 @@ async function ghPut(path, obj, sha, mensaje){
   const body = { message: mensaje, content, branch: GH_BRANCH };
   if(sha) body.sha = sha;
 
-  const r = await fetch(`${GH_API}/${path}`, {
+  const r = await fetchConReintento(`${GH_API}/${path}`, {
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${GH_TOKEN}`,
-      Accept: "application/vnd.github+json",
-      "Content-Type": "application/json"
+      "Authorization": `Bearer ${GH_TOKEN}`,
+      "Accept": "application/vnd.github+json",
+      "Content-Type": "application/json",
+      "X-GitHub-Api-Version": "2022-11-28"
     },
     body: JSON.stringify(body)
   });
+
   if(!r.ok){
     const err = await r.text();
-    throw new Error(`PUT ${path} → ${r.status}: ${err}`);
+    throw new Error(`PUT ${path} → ${r.status}: ${err.slice(0, 200)}`);
   }
   return await r.json();
 }
 
-/* ═══════════════════════════════════════════════════════════
-   4. HASH DE CONTRASEÑA (SHA-256 + salt simple)
-   ═══════════════════════════════════════════════════════════ */
 async function hashPass(pass, salt){
   const data = new TextEncoder().encode(salt + "::" + pass);
   const buf = await crypto.subtle.digest("SHA-256", data);
-  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -401,8 +458,7 @@ async function hashPass(pass, salt){
    ═══════════════════════════════════════════════════════════ */
 let modoRegistro = false;
 let currentUser  = null;
-
-const $ = id => document.getElementById(id);
+let authEnCurso  = false;
 
 function authMsg(texto, tipo){
   const el = $("authMsg");
@@ -423,16 +479,17 @@ $("switchLink").onclick = () => {
 
 $("authForm").onsubmit = async (e) => {
   e.preventDefault();
+  if(authEnCurso) return;
+
   const user = $("inUser").value.trim().toLowerCase();
   const pass = $("inPass").value;
 
-  if(!/^[a-z0-9_]{3,24}$/.test(user)){
+  if(!/^[a-z0-9_]{3,24}$/.test(user))
     return authMsg("Usuario: 3-24 chars, solo letras, números y _");
-  }
-  if(pass.length < 4){
-    return authMsg("Contraseña muy corta");
-  }
+  if(pass.length < 4)
+    return authMsg("Contraseña muy corta (mín 4)");
 
+  authEnCurso = true;
   const btn = $("authBtn");
   btn.disabled = true;
   btn.textContent = modoRegistro ? "Creando…" : "Entrando…";
@@ -443,30 +500,31 @@ $("authForm").onsubmit = async (e) => {
     const usuarios = (accounts?.usuarios) || [];
 
     if(modoRegistro){
-      if(usuarios.some(u => u.user === user)){
+      if(usuarios.some(u => u.user === user))
         throw new Error("Ese usuario ya existe");
-      }
+
       const salt = crypto.randomUUID().replace(/-/g, "");
       const hash = await hashPass(pass, salt);
-      usuarios.push({
-        user, salt, hash,
-        creado: new Date().toISOString()
-      });
+      usuarios.push({ user, salt, hash, creado: new Date().toISOString() });
+
       await ghPut(PATH_ACC, { usuarios }, sha, `Nuevo usuario: ${user}`);
       authMsg("¡Cuenta creada! Entrando…", "ok");
-      await new Promise(r => setTimeout(r, 700));
+      await new Promise(r => setTimeout(r, 600));
       iniciarSesion(user);
+      toast("Bienvenido, " + user, "ok");
     } else {
       const u = usuarios.find(x => x.user === user);
       if(!u) throw new Error("Usuario o contraseña incorrectos");
       const hash = await hashPass(pass, u.salt);
       if(hash !== u.hash) throw new Error("Usuario o contraseña incorrectos");
       iniciarSesion(user);
+      toast("Hola de nuevo, " + user, "ok");
     }
   } catch(err){
     console.error(err);
     authMsg(err.message || "Error inesperado");
   } finally {
+    authEnCurso = false;
     btn.disabled = false;
     btn.textContent = modoRegistro ? "Crear cuenta" : "Entrar";
   }
@@ -506,21 +564,22 @@ const MESES = ["enero","febrero","marzo","abril","mayo","junio",
 let tareas = [];
 let current = new Date();
 let selected = null;
+let errorCount = 0;
 
 function ymd(d){
-  return d.getFullYear() + '-' +
-    String(d.getMonth()+1).padStart(2,'0') + '-' +
-    String(d.getDate()).padStart(2,'0');
+  return d.getFullYear() + "-" +
+    String(d.getMonth()+1).padStart(2,"0") + "-" +
+    String(d.getDate()).padStart(2,"0");
 }
 function tasksFor(dateStr){
-  return tareas.filter(t => t.fecha === dateStr)
-    .sort((a,b) => (a.hora||'99').localeCompare(b.hora||'99'));
+  return tareas
+    .filter(t => t.fecha === dateStr)
+    .sort((a,b) => (a.hora||"99").localeCompare(b.hora||"99"));
 }
-function setStatus(ok, text){
+function setStatus(estado, text){
   $("statusText").textContent = text;
-  const dot = document.querySelector('.status .dot');
-  dot.style.background = ok ? 'var(--green)' : 'var(--red)';
-  dot.style.boxShadow = ok ? '0 0 0 3px rgba(52,211,153,0.15)' : '0 0 0 3px rgba(239,68,68,0.15)';
+  const dot = $("statusDot");
+  dot.className = "dot " + (estado === "ok" ? "" : estado);
 }
 
 async function cargarTareas(){
@@ -528,15 +587,16 @@ async function cargarTareas(){
   try{
     const { data } = await ghGet(PATH_TAR);
     const todas = data?.tareas || [];
-    // Filtrar por usuario
     const mias = todas.filter(t => !t.user || t.user === currentUser);
     const cambio = JSON.stringify(mias) !== JSON.stringify(tareas);
     tareas = mias;
-    setStatus(true, "Sincronizado");
+    errorCount = 0;
+    setStatus("ok", "Sincronizado");
     if(cambio) render();
   } catch(err){
+    errorCount++;
     console.error(err);
-    setStatus(false, "Error al sincronizar");
+    setStatus("err", errorCount > 2 ? "Error de conexión" : "Reintentando…");
   }
 }
 
@@ -546,44 +606,43 @@ function render(){
   $("title").textContent = `${MESES[m]} ${y}`;
 
   const grid = $("grid");
-  grid.innerHTML = '';
+  grid.innerHTML = "";
 
   const first = new Date(y, m, 1);
   const offset = (first.getDay() + 6) % 7;
   const daysInMonth = new Date(y, m+1, 0).getDate();
-  const daysInPrev = new Date(y, m, 0).getDate();
+  const daysInPrev  = new Date(y, m, 0).getDate();
   const todayStr = ymd(new Date());
 
-  for(let i = offset - 1; i >= 0; i--) grid.appendChild(makeDay(daysInPrev - i, 'other'));
+  for(let i = offset - 1; i >= 0; i--) grid.appendChild(makeDay(daysInPrev - i, "other"));
   for(let d = 1; d <= daysInMonth; d++){
-    const ds = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const cls = ds === todayStr ? 'today' : '';
-    grid.appendChild(makeDay(d, cls, ds));
+    const ds = `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;
+    grid.appendChild(makeDay(d, ds === todayStr ? "today" : "", ds));
   }
   const total = offset + daysInMonth;
   const fill = (7 - (total % 7)) % 7;
-  for(let d = 1; d <= fill; d++) grid.appendChild(makeDay(d, 'other'));
+  for(let d = 1; d <= fill; d++) grid.appendChild(makeDay(d, "other"));
 
   renderTasks();
 }
 
 function makeDay(num, cls, dateStr){
-  const el = document.createElement('div');
-  el.className = 'day ' + cls;
+  const el = document.createElement("div");
+  el.className = "day " + cls;
   el.textContent = num;
   if(dateStr){
     el.dataset.date = dateStr;
     if(tasksFor(dateStr).length){
-      el.classList.add('has-tasks');
-      const dot = document.createElement('span');
-      dot.className = 'dot';
+      el.classList.add("has-tasks");
+      const dot = document.createElement("span");
+      dot.className = "dot";
       el.appendChild(dot);
     }
-    if(dateStr === selected) el.classList.add('selected');
+    if(dateStr === selected) el.classList.add("selected");
     el.onclick = () => {
       selected = dateStr;
-      document.querySelectorAll('.day.selected').forEach(e => e.classList.remove('selected'));
-      el.classList.add('selected');
+      document.querySelectorAll(".day.selected").forEach(x => x.classList.remove("selected"));
+      el.classList.add("selected");
       renderTasks();
     };
   }
@@ -592,7 +651,7 @@ function makeDay(num, cls, dateStr){
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
 
@@ -600,21 +659,21 @@ function renderTasks(){
   const list = $("tasksList");
   const title = $("tasksTitle");
   const count = $("tasksCount");
-  list.innerHTML = '';
+  list.innerHTML = "";
 
   if(!selected){
-    title.textContent = 'Seleccioná un día';
-    count.textContent = '';
+    title.textContent = "Seleccioná un día";
+    count.textContent = "";
     list.innerHTML = '<div class="empty"><span class="big">📭</span>Elegí un día para ver tus tareas</div>';
     return;
   }
 
-  const [y,m,d] = selected.split('-').map(Number);
+  const [y,m,d] = selected.split("-").map(Number);
   title.textContent = `${d} de ${MESES[m-1]}`;
 
   const ts = tasksFor(selected);
-  count.textContent = ts.length === 0 ? 'sin tareas' :
-    ts.length === 1 ? '1 tarea' : `${ts.length} tareas`;
+  count.textContent = ts.length === 0 ? "sin tareas" :
+    ts.length === 1 ? "1 tarea" : `${ts.length} tareas`;
 
   if(!ts.length){
     list.innerHTML = '<div class="empty"><span class="big">✨</span>Día libre</div>';
@@ -622,14 +681,14 @@ function renderTasks(){
   }
 
   ts.forEach((t, i) => {
-    const el = document.createElement('div');
-    el.className = 'task';
+    const el = document.createElement("div");
+    el.className = "task";
     el.style.animation = `fadeIn .3s ${i*0.04}s both`;
     el.innerHTML = `
-      <div class="time ${t.hora ? '' : 'empty'}">${t.hora || '—'}</div>
+      <div class="time ${t.hora ? "" : "empty"}">${t.hora || "—"}</div>
       <div class="body">
-        <div class="title">${escapeHtml(t.titulo || '')}</div>
-        ${t.descripcion ? `<div class="desc">${escapeHtml(t.descripcion)}</div>` : ''}
+        <div class="title">${escapeHtml(t.titulo || "")}</div>
+        ${t.descripcion ? `<div class="desc">${escapeHtml(t.descripcion)}</div>` : ""}
       </div>`;
     list.appendChild(el);
   });
@@ -639,30 +698,35 @@ $("prev").onclick = () => { current.setMonth(current.getMonth() - 1); render(); 
 $("next").onclick = () => { current.setMonth(current.getMonth() + 1); render(); };
 
 document.addEventListener("keydown", e => {
+  const tag = (e.target.tagName || "").toLowerCase();
+  if(tag === "input" || tag === "textarea") return;
   if(e.key === "ArrowLeft")  $("prev").click();
   if(e.key === "ArrowRight") $("next").click();
 });
 
-const st = document.createElement('style');
+const st = document.createElement("style");
 st.textContent = `@keyframes fadeIn{from{opacity:0; transform:translateY(6px)}to{opacity:1; transform:none}}`;
 document.head.appendChild(st);
 
 /* ═══════════════════════════════════════════════════════════
-   7. AUTOLOGIN
+   7. AUTO-LOGIN
    ═══════════════════════════════════════════════════════════ */
 (async () => {
+  if(!GH_TOKEN || GH_TOKEN.length < 10){
+    authMsg("⚠️ Configurá GH_USER, GH_REPO y TOKEN_OFUSCADO en el HTML", "warn");
+    return;
+  }
   const saved = localStorage.getItem("taskhub_user");
-  if(saved){
-    try{
-      const { data } = await ghGet(PATH_ACC);
-      if(data?.usuarios?.some(u => u.user === saved)){
-        iniciarSesion(saved);
-      } else {
-        localStorage.removeItem("taskhub_user");
-      }
-    } catch(e){
-      console.warn("No se pudo verificar sesión:", e.message);
+  if(!saved) return;
+  try{
+    const { data } = await ghGet(PATH_ACC);
+    if(data?.usuarios?.some(u => u.user === saved)){
+      iniciarSesion(saved);
+    } else {
+      localStorage.removeItem("taskhub_user");
     }
+  } catch(e){
+    console.warn("[TaskHUB] No se pudo verificar sesión:", e.message);
   }
 })();
 </script>
